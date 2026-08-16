@@ -1,0 +1,8 @@
+## Interface: 90207
+## Title: Emotions
+## Notes: Fast-click conceptual menu for WoW Epsilon emote commands (.mod stand [ID]).
+## Author: Gemini
+## Version: 1.0.0
+## SavedVariables: EmotionsDB
+
+Emotions.xml

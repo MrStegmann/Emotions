@@ -1,0 +1,12 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    <!-- Load utility modules -->
+    <Script file="src/utils/storage.lua"/>
+    <Script file="src/utils/menu.lua"/>
+
+    <!-- Load WoW API event handler -->
+    <Script file="src/events/events.lua"/>
+
+    <!-- Load main entry point & orchestrator -->
+    <Script file="src/index.lua"/>
+</Ui>
