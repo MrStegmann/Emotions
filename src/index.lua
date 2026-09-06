@@ -1,4 +1,5 @@
 local addonName, addon = ...
+local Emotions = addon.Emotions
 
 local currentPage = 1
 local isEditMode = false
@@ -33,7 +34,7 @@ end
 local function RefreshMenu()
     if not menuFrame or not menuFrame:IsShown() then return end
 
-    local allEmotes = addon.Storage.GetEmotes()
+    local allEmotes = Emotions.Storage.GetEmotes()
     local displayList = {}
     
     for i, v in ipairs(allEmotes) do
@@ -51,15 +52,15 @@ local function RefreshMenu()
         displayList = filtered
     end
 
-    local totalPages = addon.Menu.GetTotalPages(#displayList)
+    local totalPages = Emotions.Menu.GetTotalPages(#displayList)
     if currentPage > totalPages then
         currentPage = totalPages
     end
 
-    local slice, startIndex = addon.Menu.GetPageSlice(displayList, currentPage)
+    local slice, startIndex = Emotions.Menu.GetPageSlice(displayList, currentPage)
 
     -- Update 9 emote slot buttons
-    for i = 1, addon.Menu.EMOTES_PER_PAGE do
+    for i = 1, Emotions.Menu.EMOTES_PER_PAGE do
         local btn = itemSlots[i]
         local emoteData = slice[i]
 
@@ -100,7 +101,7 @@ local function RefreshMenu()
 
     -- Update Footer Page Indicator
     if pageText then
-        if #displayList > addon.Menu.EMOTES_PER_PAGE then
+        if #displayList > Emotions.Menu.EMOTES_PER_PAGE then
             pageText:SetText("Page " .. currentPage .. " / " .. totalPages .. " (Scroll)")
             pageText:Show()
         else
@@ -199,9 +200,9 @@ local function CreateAddEmoteFrame()
 
         local ok, err
         if frame.editIndex then
-            ok, err = addon.Storage.UpdateEmote(frame.editIndex, labelVal, idVal)
+            ok, err = Emotions.Storage.UpdateEmote(frame.editIndex, labelVal, idVal)
         else
-            ok, err = addon.Storage.AddEmote(labelVal, idVal)
+            ok, err = Emotions.Storage.AddEmote(labelVal, idVal)
         end
 
         if ok then
@@ -268,7 +269,7 @@ local function CreateConfirmDeleteFrame()
     deleteBtn:SetText("Delete")
     deleteBtn:SetScript("OnClick", function()
         if frame.deleteIndex then
-            addon.Storage.RemoveEmote(frame.deleteIndex)
+            Emotions.Storage.RemoveEmote(frame.deleteIndex)
             frame:Hide()
             RefreshMenu()
         end
@@ -304,7 +305,7 @@ local function CreateMenuFrame()
     frame:SetScript("OnDragStop", function(self)
         self:StopMovingOrSizing()
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint()
-        addon.Storage.SaveMenuPosition(point, relativePoint or "BOTTOMLEFT", xOfs, yOfs)
+        Emotions.Storage.SaveMenuPosition(point, relativePoint or "BOTTOMLEFT", xOfs, yOfs)
     end)
 
     if frame.SetBackdrop then
@@ -421,7 +422,7 @@ local function CreateMenuFrame()
     end)
 
     -- Generate 9 emote slots (Options 1 to 9)
-    for i = 1, addon.Menu.EMOTES_PER_PAGE do
+    for i = 1, Emotions.Menu.EMOTES_PER_PAGE do
         local btn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
         btn:SetSize(204, 22)
 
@@ -547,7 +548,7 @@ local function CreateLauncherButton()
         if menuFrame:IsShown() then
             menuFrame:Hide()
         else
-            local pos = addon.Storage.GetMenuPosition()
+            local pos = Emotions.Storage.GetMenuPosition()
             if pos then
                 menuFrame:ClearAllPoints()
                 menuFrame:SetPoint(pos.point, UIParent, pos.relativePoint, pos.xOfs, pos.yOfs)
@@ -569,9 +570,9 @@ local function OnPlayerLogin()
 end
 
 -- Register addon event callbacks
-addon.Events.Init(
+Emotions.Events.Init(
     function() -- ADDON_LOADED
-        addon.Storage.Init()
+        Emotions.Storage.Init()
     end,
     function() -- PLAYER_LOGIN
         OnPlayerLogin()

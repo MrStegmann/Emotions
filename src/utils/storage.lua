@@ -1,8 +1,11 @@
 local addonName, addon = ...
-addon.Storage = {}
+addon.Emotions = addon.Emotions or {}
+local Emotions = addon.Emotions
+
+Emotions.Storage = {}
 
 --- Initialized SavedVariables data structure if missing
-function addon.Storage.Init()
+function Emotions.Storage.Init()
     if type(EmotionsDB) ~= "table" then
         EmotionsDB = {
             version = 1,
@@ -19,7 +22,7 @@ end
 
 --- Returns the list of saved emote entries
 -- @return table List of { label = string, id = string }
-function addon.Storage.GetEmotes()
+function Emotions.Storage.GetEmotes()
     if not EmotionsDB or not EmotionsDB.emotes then
         return {}
     end
@@ -30,8 +33,8 @@ end
 -- @param label string Display label in the menu
 -- @param id string Emote ID number or string
 -- @return boolean, string Success status and optional error message
-function addon.Storage.AddEmote(label, id)
-    addon.Storage.Init()
+function Emotions.Storage.AddEmote(label, id)
+    Emotions.Storage.Init()
     
     local cleanLabel = tostring(label or ""):gsub("^%s*(.-)%s*$", "%1")
     local cleanId = tostring(id or ""):gsub("^%s*(.-)%s*$", "%1")
@@ -52,7 +55,7 @@ end
 -- @param label string New display label
 -- @param id string New emote ID
 -- @return boolean, string Success status and optional error message
-function addon.Storage.UpdateEmote(index, label, id)
+function Emotions.Storage.UpdateEmote(index, label, id)
     if not EmotionsDB or not EmotionsDB.emotes or not EmotionsDB.emotes[index] then
         return false, "Emote index out of bounds."
     end
@@ -74,7 +77,7 @@ end
 --- Removes a saved emote by index
 -- @param index number Position index in the table
 -- @return boolean Success status
-function addon.Storage.RemoveEmote(index)
+function Emotions.Storage.RemoveEmote(index)
     if EmotionsDB and EmotionsDB.emotes and EmotionsDB.emotes[index] then
         table.remove(EmotionsDB.emotes, index)
         return true
@@ -87,8 +90,8 @@ end
 -- @param relativePoint string The relative anchor point on UIParent
 -- @param xOfs number The X offset
 -- @param yOfs number The Y offset
-function addon.Storage.SaveMenuPosition(point, relativePoint, xOfs, yOfs)
-    addon.Storage.Init()
+function Emotions.Storage.SaveMenuPosition(point, relativePoint, xOfs, yOfs)
+    Emotions.Storage.Init()
     EmotionsDB.menuPosition = {
         point = point,
         relativePoint = relativePoint,
@@ -99,7 +102,7 @@ end
 
 --- Returns the saved menu position
 -- @return table|nil Table containing position data, or nil if not set
-function addon.Storage.GetMenuPosition()
+function Emotions.Storage.GetMenuPosition()
     if not EmotionsDB then return nil end
     return EmotionsDB.menuPosition
 end
