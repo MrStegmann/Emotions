@@ -51,3 +51,6 @@ This project follows strict engineering practices tailored for the WoW UI enviro
 - **Single Responsibility Principle (SRP):** Clean separation of concerns across different files and modules.
 - **Event-Driven:** Robust handling of WoW API lifecycle events like `ADDON_LOADED` and `PLAYER_LOGIN`.
 - **Modular Namespace:** Carefully encapsulated code to prevent global variable pollution.
+
+
+_Support me on https://ko-fi.com/mrstegmann_
