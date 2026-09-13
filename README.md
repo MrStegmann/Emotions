@@ -5,7 +5,7 @@
 **Fast-click conceptual menu for WoW Epsilon emote commands.**
 
 [![World of Warcraft - Epsilon](https://img.shields.io/badge/World_of_Warcraft-Epsilon-blue?style=flat-square)](#)
-[![Version 1.0.0](https://img.shields.io/badge/Version-1.0.0-brightgreen?style=flat-square)](#)
+[![Version 1.0.1](https://img.shields.io/badge/Version-1.0.1-brightgreen?style=flat-square)](#)
 [![Lua](https://img.shields.io/badge/Language-Lua-00007A?style=flat-square&logo=lua&logoColor=white)](#)
 
 </div>

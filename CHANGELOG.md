@@ -1,3 +1,12 @@
+## 1.0.1 - 2026-09-13
+
+### Features
+- Dual-click button interaction: Left-click triggers player emote (`.mod stand <ID>`), Right-click triggers repeating NPC emote (`.npc emote <ID> repeat`).
+- Enhanced multi-line tooltips displaying Emote ID, Left-click action prompt, and Right-click action prompt with yellow labels (`ID:`, `Left Click:`, `Right Click:`) and white values.
+
+### Fixes
+- Added target validation check and red error notice (`You must have a NPC on target`) when Right-clicking without an NPC targeted.
+
 ## 1.0.0 - 2026-08-16
 
 ### Features
