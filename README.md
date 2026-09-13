@@ -32,11 +32,12 @@ Emotions is a World of Warcraft addon designed specifically for the Epsilon WoW 
 2. Click the **[+]** icon (Add Button) to create a new emote entry.
 3. Enter a descriptive **Label** and the corresponding **Emote ID** (e.g., `720` for `.mod stand 720`).
 4. Click **Save** to add it to your menu.
-5. Simply click on any saved emote in the menu to instantly execute the command in-game.
-6. Use the **Search Box** at the top of the menu to instantly filter and sort your saved emotes alphabetically.
-7. **Left-Click & Drag** the menu to move it anywhere on your screen. The position will be saved automatically.
-8. Click the gear icon to toggle **Edit Mode**, allowing you to update or remove existing emotes.
-9. Click the **"X"** button to easily close the menu.
+5. **Left-Click** any saved emote button to trigger the player emote (`.mod stand <ID>`).
+6. **Right-Click** any saved emote button while targeting an NPC to trigger the repeating NPC emote (`.npc emote <ID> repeat`). If no NPC is targeted, a red warning notice (`You must have a NPC on target`) will be displayed.
+7. Use the **Search Box** at the top of the menu to instantly filter and sort your saved emotes alphabetically.
+8. **Left-Click & Drag** the menu header to move it anywhere on your screen. The position will be saved automatically.
+9. Click the gear icon to toggle **Edit Mode**, allowing you to update or remove existing emotes.
+10. Click the **"X"** button to easily close the menu.
 
 ## Installation
 

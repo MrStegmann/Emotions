@@ -15,6 +15,12 @@ local searchQuery = ""
 
 local backdropTemplate = BackdropTemplateMixin and "BackdropTemplate" or nil
 
+--- Validates if the player currently has an NPC entity targeted
+-- @return boolean
+local function IsNPCTargeted()
+    return UnitExists("target") and not UnitIsPlayer("target")
+end
+
 --- Executes the Epsilon command for the given emote ID
 -- @param emoteId string
 local function ExecuteEmoteCommand(emoteId)
@@ -28,6 +34,38 @@ local function ExecuteEmoteCommand(emoteId)
     if MacroFrame_ExecuteMacroLine then
         pcall(MacroFrame_ExecuteMacroLine, command)
     end
+end
+
+--- Executes the Epsilon NPC repeating emote command for the given emote ID
+-- @param emoteId string
+local function ExecuteNPCEmoteCommand(emoteId)
+    if not emoteId or emoteId == "" then return end
+    local command = ".npc emote " .. tostring(emoteId) .. " repeat"
+    
+    -- Primary: SendChatMessage using valid chatType "SAY"
+    SendChatMessage(command, "SAY")
+
+    -- Fallback: Macro execution line if available
+    if MacroFrame_ExecuteMacroLine then
+        pcall(MacroFrame_ExecuteMacroLine, command)
+    end
+end
+
+--- Updates and renders the multi-line tooltip for an emote button
+-- @param buttonFrame Frame
+local function ShowEmoteTooltip(buttonFrame)
+    if not buttonFrame or not buttonFrame.emoteId or buttonFrame.emoteId == "" then
+        if GameTooltip:GetOwner() == buttonFrame then
+            GameTooltip:Hide()
+        end
+        return
+    end
+    local id = tostring(buttonFrame.emoteId)
+    GameTooltip:SetOwner(buttonFrame, "ANCHOR_RIGHT")
+    GameTooltip:SetText("|cffffd100ID:|r |cffffffff" .. id .. "|r", 1, 1, 1)
+    GameTooltip:AddLine("|cffffd100Left Click:|r |cffffffff.mod stand " .. id .. "|r", 1, 1, 1)
+    GameTooltip:AddLine("|cffffd100Right Click:|r |cffffffff.npc emote " .. id .. " repeat|r", 1, 1, 1)
+    GameTooltip:Show()
 end
 
 --- Refreshes the options inside the conceptual menu
@@ -81,12 +119,7 @@ local function RefreshMenu()
                 btn.deleteBtn:Hide()
             end
             if GameTooltip:GetOwner() == btn then
-                if btn.emoteId and btn.emoteId ~= "" then
-                    GameTooltip:SetText("ID: [" .. tostring(btn.emoteId) .. "]")
-                    GameTooltip:Show()
-                else
-                    GameTooltip:Hide()
-                end
+                ShowEmoteTooltip(btn)
             end
         else
             btn:Hide()
@@ -425,6 +458,7 @@ local function CreateMenuFrame()
     for i = 1, Emotions.Menu.EMOTES_PER_PAGE do
         local btn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
         btn:SetSize(204, 22)
+        btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
         if i == 1 then
             btn:SetPoint("TOPLEFT", searchInput, "BOTTOMLEFT", -4, -6)
@@ -455,24 +489,30 @@ local function CreateMenuFrame()
         btn.deleteBtn = deleteBtn
 
         btn:SetScript("OnEnter", function(self)
-            if self.emoteId and self.emoteId ~= "" then
-                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("ID: " .. tostring(self.emoteId))
-                GameTooltip:Show()
-            end
+            ShowEmoteTooltip(self)
         end)
 
         btn:SetScript("OnLeave", function()
             GameTooltip:Hide()
         end)
 
-        btn:SetScript("OnClick", function(self)
+        btn:SetScript("OnClick", function(self, button)
             if isEditMode then
                 if self.globalIndex and self.emoteId then
                     OpenEditEmoteDialog(self.globalIndex, self:GetText(), self.emoteId)
                 end
-            elseif self.emoteId then
-                ExecuteEmoteCommand(self.emoteId)
+            elseif button == "RightButton" then
+                if IsNPCTargeted() then
+                    if self.emoteId then
+                        ExecuteNPCEmoteCommand(self.emoteId)
+                    end
+                else
+                    UIErrorsFrame:AddMessage("You must have a NPC on target", 1.0, 0.1, 0.1, 1.0)
+                end
+            elseif button == "LeftButton" or not button then
+                if self.emoteId then
+                    ExecuteEmoteCommand(self.emoteId)
+                end
             end
         end)
 

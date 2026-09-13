@@ -1,6 +1,9 @@
-.specs/*
+.specify/*
+specs/*
 AGENTS.md
 .env
 .env.*
 .agents/*
 skills-lock.json
+
+copy_to_suite.sh
